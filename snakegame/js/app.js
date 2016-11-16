@@ -2,24 +2,52 @@
 "use strict";
 var snake_1 = require('./modules/snake');
 var draw_snake_1 = require('./modules/draw_snake');
+var direction_1 = require('./modules/direction');
 var AppLaunch = (function () {
     function AppLaunch() {
     }
     AppLaunch.prototype.main = function () {
         draw_snake_1.drawSnake.draw(snake_1.snakeObj);
+        direction_1.directDifine.test();
     };
     return AppLaunch;
 }());
 var appLaunch = new AppLaunch();
 appLaunch.main();
 
-},{"./modules/draw_snake":3,"./modules/snake":4}],2:[function(require,module,exports){
+},{"./modules/direction":2,"./modules/draw_snake":4,"./modules/snake":5}],2:[function(require,module,exports){
+"use strict";
+var Direction = (function () {
+    function Direction() {
+        this.direction = {
+            dX: 1,
+            dY: 0
+        };
+    }
+    Direction.prototype.getMouseEv = function () {
+        var _this = this;
+        window.onkeydown = function (e) {
+            var keyCode = e.keyCode || e.which;
+            switch (keyCode) {
+                case 38: _this.direc;
+            }
+        };
+    };
+    Direction.prototype.test = function () {
+        this.getMouseEv();
+    };
+    return Direction;
+}());
+var directDifine = new Direction();
+exports.directDifine = directDifine;
+
+},{}],3:[function(require,module,exports){
 "use strict";
 var canObj = document.getElementById('canvas-ground');
 var canTxt = canObj.getContext('2d');
 exports.canTxt = canTxt;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 var dom_obj_1 = require('./dom_obj');
 var snake_option_1 = require('../options/snake_option');
@@ -43,7 +71,7 @@ var DrawSnake = (function () {
 var drawSnake = new DrawSnake();
 exports.drawSnake = drawSnake;
 
-},{"../options/snake_option":5,"./dom_obj":2}],4:[function(require,module,exports){
+},{"../options/snake_option":6,"./dom_obj":3}],5:[function(require,module,exports){
 "use strict";
 var Snake = (function () {
     function Snake() {
@@ -67,7 +95,7 @@ var Snake = (function () {
 var snakeObj = new Snake();
 exports.snakeObj = snakeObj;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 var snakeOpt = {
     width: 20,
