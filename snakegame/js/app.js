@@ -13,8 +13,16 @@ var AppLaunch = (function () {
 var appLaunch = new AppLaunch();
 appLaunch.main();
 
-},{"./modules/draw_snake":2,"./modules/snake":3}],2:[function(require,module,exports){
+},{"./modules/draw_snake":3,"./modules/snake":4}],2:[function(require,module,exports){
 "use strict";
+var canObj = document.getElementById('canvas-ground');
+var canTxt = canObj.getContext('2d');
+exports.canTxt = canTxt;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+var dom_obj_1 = require('./dom_obj');
+var snake_option_1 = require('../options/snake_option');
 var DrawSnake = (function () {
     function DrawSnake() {
     }
@@ -22,6 +30,11 @@ var DrawSnake = (function () {
         for (var _i = 0, _a = snake.body; _i < _a.length; _i++) {
             var item = _a[_i];
             console.log(item);
+            dom_obj_1.canTxt.fillStyle = snake_option_1.snakeOpt.color;
+            dom_obj_1.canTxt.lineWidth = snake_option_1.snakeOpt.lineWidth;
+            var dLeft = item.pos[0] - (item.width / 2);
+            var dTop = item.pos[1] - (item.height / 2);
+            dom_obj_1.canTxt[snake_option_1.snakeOpt.lineType](dLeft, dTop, item.width, item.height);
         }
         return this.draw;
     };
@@ -30,20 +43,39 @@ var DrawSnake = (function () {
 var drawSnake = new DrawSnake();
 exports.drawSnake = drawSnake;
 
-},{}],3:[function(require,module,exports){
+},{"../options/snake_option":5,"./dom_obj":2}],4:[function(require,module,exports){
 "use strict";
 var Snake = (function () {
     function Snake() {
-        this.body = [[
-                { pos: [20, 20] },
-                { width: 20 },
-                { height: 20 },
-                { rotate: 0 }
-            ]];
+        this.body = [
+            { pos: [20, 20],
+                width: 20,
+                height: 20,
+                rotate: 0 },
+            { pos: [40, 20],
+                width: 20,
+                height: 20,
+                rotate: 0 },
+            { pos: [60, 20],
+                width: 20,
+                height: 20,
+                rotate: 0 }
+        ];
     }
     return Snake;
 }());
 var snakeObj = new Snake();
 exports.snakeObj = snakeObj;
+
+},{}],5:[function(require,module,exports){
+"use strict";
+var snakeOpt = {
+    width: 20,
+    height: 20,
+    lineType: 'strokeRect',
+    lineWidth: 1,
+    color: '#aaa',
+};
+exports.snakeOpt = snakeOpt;
 
 },{}]},{},[1])

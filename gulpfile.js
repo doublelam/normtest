@@ -44,3 +44,7 @@ gulp.task('watch',function(){
     gulp.watch(WATCH_PATH.ts,['typescript']);
     gulp.watch(WATCH_PATH.midjs,['browserify']);
 });
+
+process.on('uncaughtException', (err) => {
+  console.log('process error',err);
+});
