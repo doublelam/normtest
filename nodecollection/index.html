@@ -1,0 +1,72 @@
+<html>
+    <body>
+        <div id="query">
+            <div class="query">1</div>
+            <div class="query">2</div>
+            <div class="query">3</div>
+            <div class="query">4</div>
+        </div>
+        <div id="docget">
+            <div class="docget">1</div>
+            <div class="docget">2</div>
+            <div class="docget">3</div>
+            <div class="docget">4</div>
+        </div>
+
+        <script>
+            function watchObj() {
+                return (obj,keys,callback) => {
+                    let propVal = {};
+                    keys.forEach((item,index) => {
+                        this['fak' + item] = obj[item] || '';
+                        propVal['fak' + item] = {
+                            enumerable: false
+                        };
+                        propVal[item] = {
+                            enumerable: true,
+                            configurable: true,
+                            set: (val) => {
+                                this['fak' + item] = val;
+                                callback.call(this);
+                                return this['fak' + item];
+                            },
+                            get: () => this['fak' + item]
+                        };
+                    });
+                    Object.defineProperties(obj,propVal);
+                }
+            } 
+            let $watch = new watchObj();
+        </script>
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+        <script>
+            var obj = {};
+            var conQuery = document.getElementById('query');
+            var conGet = document.getElementById('docget');
+            obj.query = document.querySelectorAll('.query');
+            obj.docGet = document.getElementsByClassName('docget');
+            obj.jque = $('.docget');
+            $watch(obj,['docGet'],function(){
+                console.log('changed',this);
+            });
+            $watch(obj,['query'],function(){
+                console.log('changed',this);
+            });
+            var newNode1 = document.createElement('div');
+            newNode1.className = 'query',
+            newNode1.innerText = '5',
+            // conQuery.appendChild(newNode1);
+            setTimeout(function(){
+                conQuery.appendChild(newNode1);
+                conGet.appendChild(newNode2);
+                obj.query = 'null';
+            },2000);
+            var newNode2 = document.createElement('div');
+            newNode2.className = 'docget',
+            newNode2.innerText = '5',
+            // conGet.appendChild(newNode2);
+            console.log(obj,obj.query,obj.docGet,obj.jque);
+
+        </script>
+    </body>
+</html>

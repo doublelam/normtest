@@ -1,0 +1,25 @@
+{
+    "globals":  {
+        "$"                     : true,
+        "SQ"                    : true,
+        "console"               : true,
+        "jQuery"                : true
+    },
+    "asi"     : true,
+    "bitwise" : true,
+    "browser" : true,
+    "curly"   : true,
+    "devel"   : true,
+    "eqeqeq"  : true,
+    "expr"    : true,
+    "forin"   : true,
+    "freeze"  : true,
+    "latedef" : true,
+    "nonbsp"  : true,
+    "nonew"   : true,
+    "strict"  : false,
+    "jquery"  : true,
+    "undef"   : true,
+    "esversion": 6,
+    "node": true
+}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head></head>
+
+<body>
+    <div id="cycle">click</div>
+    <div id="second">second</div>
+
+    <script>
+        (function(){
+            var oCy = document.querySelector('#cycle');
+            oCy.onclick = function(){
+                var txt = 'sssasas';
+                console.profile('test')
+                for(var i = 0;i < 50000;i++){
+                    txt += 'long string';
+                }
+                console.profileEnd('test')
+                console.log(txt)
+                console.log('this',this)
+                console.log(oCy === this)
+            }
+            console.log(oCy)
+            oCy = document.querySelector('#second');
+            console.log(oCy)
+            // setTimeout(function(){
+            //     document.body.removeChild(oCy);
+            //     console.log('ocy removed');
+            // },5000);
+        })()
+
+     </script>
+</body>
+
+</html>

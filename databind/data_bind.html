@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+<head></head>
+
+<body>
+    <input type="text" id="input" data-bind="bind">
+    <textarea name="" id="textarea" cols="30" rows="10" data-bind="bind"></textarea>
+    <div id="change" data-bind="bind">rewtgre</div>
+    <button id="btn">change it</button>
+
+    <div id="js-test">
+        
+    </div>
+    <button id="unload-js">unload</button>
+    <style>
+
+    </style>
+
+    <script src="./watching_obj.js"></script>
+    <script>
+            let watchBindData = {};
+            let dataDoms = document.querySelectorAll('[data-bind]');
+            let oldVal = [];
+            dataDoms.forEach(function(item,index){
+                let key = item.getAttribute('data-bind');
+                 $watch(watchBindData,[key],()=>{document.querySelectorAll('[data-bind="'+key+'"]').forEach((item,index) => {
+                if (item.nodeName !== 'INPUT'&& item.nodeName !== 'TEXTAREA'){
+                    if(oldVal[key] !== watchBindData[key]){
+                        item.innerHTML = watchBindData[key];
+                    }
+                    oldVal[key] = item.innerHTML;
+                }else{
+                    if(oldVal[key] !== watchBindData[key] && document.activeElement !== item){
+                        item.value = watchBindData[key];
+                    }
+                }
+            })});
+            });
+            
+           
+            let input = document.getElementById('input');
+            let oBtn = document.getElementById('btn');
+            let oTxt = document.getElementById('textarea');
+            input.oninput = function(){
+                watchBindData[this.getAttribute('data-bind')] = this.value;
+            };
+            oTxt.oninput = function(){
+                watchBindData[this.getAttribute('data-bind')] = this.value;
+            };
+            oBtn.onclick = function(){
+                watchBindData['bind'] += 'added content ';
+            }
+
+            let unloadDom = document.querySelector('#unload-js');
+            let testDom = document.querySelector('#js-test');
+            let script = document.createElement('script');
+            script.innerHTML = 'let n = 0;\nsetInterval(function (){console.log(n++)},1000);console.log()';
+            testDom.appendChild(script);
+            unloadDom.onclick = function(){
+                console.log()
+                document.querySelector('#js-test').parentNode.removeChild(document.querySelector('#js-test'));
+            }
+        </script>
+</body>
+
+</html>

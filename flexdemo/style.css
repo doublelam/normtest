@@ -1,0 +1,32 @@
+.wrapper{
+    counter-reset: listmount;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start; 
+    align-content: flex-start;
+    background-color: #84AFF6;
+    height: 100px;
+    resize: vertical;
+    overflow: auto;
+}
+ul li{
+    list-style: none;
+}
+.wrapper .list{
+    width: 60px;
+    text-align: center;
+    margin: 5px;
+}
+.wrapper .list::before{
+    counter-increment: listmount;
+    content: 'list  ' counter(listmount);
+}
+.wrapper .list:nth-child(odd){
+    background-color: #eee;
+    height: 60px;
+}
+.wrapper .list:nth-child(even){
+    background-color: #888;
+    height: 90px;
+}

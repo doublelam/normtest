@@ -1,0 +1,11 @@
+<div class="extra">
+    some extra content; 
+</div>
+<script>
+    if(typeof(extraPageLoaded) === 'undefined'){
+        $('body').click(function(){
+            console.log($('.extra'));
+        })
+    };
+    var extraPageLoaded = 'loaded';
+</script>

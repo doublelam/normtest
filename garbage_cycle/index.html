@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head></head>
+    <body>
+        <style>
+            #test{
+                width: 100px;
+                height: 100px;
+                background-color: #aaa;
+            }
+            #gdiv{
+                width: 100px;
+                height: 100px;
+                background-color: #555;
+            }
+        </style>
+        <button id="btn">delete</button>
+        <button id="add">add dom</button>
+        <br>
+        <button id="gbtn">gdelete</button>
+        <button id="gadd">gadd dom</button>
+        <div id="test"></div>
+        <div id="gdiv"></div>
+        <div id="profiletest">profile test</div>
+        
+        <script>
+            function rr(){
+                var profileTest = document.querySelector('#profiletest');
+                for (var i = 0; i<500000; i++){
+                    profileTest.innerHTML = 'profile count' + i;
+                }  
+            };
+            rr();
+            function nonglobal(){
+                var oTes = document.getElementById('test');
+                document.getElementById('btn').onclick = function(){
+                     document.body.removeChild(oTes);
+                }
+               oTes.onclick = function(){
+                    console.log('oTe clicked');
+                }
+
+                // document.getElementById('add').onclick = function(){
+                //     document.body.appendChild(oTes);
+                // }
+            };
+            nonglobal();
+
+            var gTes = document.getElementById('gdiv');
+            document.getElementById('gbtn').onclick = function(){
+                document.body.removeChild(gTes);
+            }
+            gTes.onclick = function(){
+                console.log('global div clicked');
+            }
+            // document.getElementById('gadd').onclick = function(){
+            //     document.body.appendChild(gTes);
+            // }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <button id="push-btn">push url</button>
+    <button id="replace-btn">replace url</button>
+    <button id="get-state">get history state</button>
+    <button id="history-go">history go</button>
+    <button id="hash-change">hash change</button>
+    <script>
+        var oBtn = document.querySelector('#push-btn');
+        var replaceBtn = document.querySelector('#replace-btn');
+        var getState = document.querySelector('#get-state');
+        var historyGo = document.querySelector('#history-go');
+        var hashChange = document.querySelector('#hash-change');
+        var urlStatus = [];
+        var url = null;
+        oBtn.onclick = function(){
+            url = 'changed';
+            if(url !== urlStatus.state){
+                window.history.pushState({title:'pushed'},url,'./pushed');
+                urlStatus.state = url;
+            }
+            
+        }
+        replaceBtn.onclick = function(){
+            url = 'replaced';
+            if(url !== urlStatus.state){
+                window.history.replaceState({title:'replaced'},url,'./replaced');
+                urlStatus.state = url;
+            }
+        }
+        var n = 0;
+        hashChange.onclick = function(){
+            window.location.hash = 'hash' + n++;
+        }
+        window.onhashchange = function(){
+            console.log(window.location.hash);
+        }
+        var eevent = new Event('hashchange');
+        historyGo.onclick = function(){
+            window.dispatchEvent(eevent);
+        }
+        getState.onclick = function(){
+            console.log(history)
+        }
+        window.onpopstate = function(data){
+            console.log('popstate change',history,'data',data.state);
+        }
+        function initUrl(){
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+    <head></head>
+    <body>
+        <div id="test">test</div>
+        <button id="part">part</button>
+        <button id="extra">extra</button>
+        <script type="text/javascript" src="http://ams.alibaba-inc.com/static/lib/jquery/dist/jquery.min.js"></script>
+        <script>
+            $('#part').click(function(){
+                $('#test').load('./part.html');
+            });
+            $('#extra').click(function(){
+                $('#test').load('./extra.html');
+            });
+        </script>
+    </body>
+</html>
