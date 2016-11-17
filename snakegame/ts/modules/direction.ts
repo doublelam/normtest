@@ -4,7 +4,7 @@ class Direction{
         this.direction = [1,0];
         this.getMouseEv();
     }
-    public getDir(): Object{
+    public getDir(): Array<number>{
         return this.direction;
     }
     public setDir(dx: number,dy: number): Object{

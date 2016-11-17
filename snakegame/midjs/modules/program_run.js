@@ -9,14 +9,13 @@ var ProgramRn = (function () {
     ProgramRn.prototype.main = function () {
         this.changeTime();
         watch_obj_1.$watch(timer_1.timerRn, ['runTime'], function () {
-            console.log(this.runTime);
             draw_snake_1.drawSnake.draw(snake_1.snakeObj.newSnake());
         });
     };
     ProgramRn.prototype.changeTime = function () {
         setInterval(function () {
             timer_1.timerRn.forwardTime();
-        }, 3000);
+        }, 500);
     };
     return ProgramRn;
 }());

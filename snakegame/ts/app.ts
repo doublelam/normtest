@@ -1,6 +1,5 @@
 import {snakeObj} from './modules/snake';
 import {drawSnake} from './modules/draw_snake';
-import {directDifine} from './modules/direction';
 import {programRn} from './modules/program_run';
 
 class AppLaunch{

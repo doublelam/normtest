@@ -6,14 +6,13 @@ class ProgramRn{
     public main(){
         this.changeTime();
         $watch(timerRn,['runTime'],function(){
-            console.log(this.runTime);
             drawSnake.draw(snakeObj.newSnake());
         });
     } 
     public changeTime(){
         setInterval(function(){
             timerRn.forwardTime();
-        },3000);
+        },500);
     }
 }
 let programRn = new ProgramRn();

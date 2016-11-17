@@ -87,12 +87,11 @@ var DrawSnake = (function () {
         dom_obj_1.canTxt.clearRect(0, 0, dom_obj_1.canObj.width, dom_obj_1.canObj.height);
         for (var _i = 0, _a = snake.body; _i < _a.length; _i++) {
             var item = _a[_i];
-            console.log(item);
-            dom_obj_1.canTxt.fillStyle = snake_option_1.snakeOpt.color;
-            dom_obj_1.canTxt.lineWidth = snake_option_1.snakeOpt.lineWidth;
+            dom_obj_1.canTxt.fillStyle = item.color || snake_option_1.snakeOpt.color;
+            dom_obj_1.canTxt.lineWidth = item.lineWidth || snake_option_1.snakeOpt.lineWidth;
             var dLeft = item.pos[0] - (item.width / 2);
             var dTop = item.pos[1] - (item.height / 2);
-            dom_obj_1.canTxt[snake_option_1.snakeOpt.lineType](dLeft, dTop, item.width, item.height);
+            dom_obj_1.canTxt[item.drawStyle || snake_option_1.snakeOpt.lineType](dLeft, dTop, item.width, item.height);
         }
         return this.draw;
     };
@@ -113,14 +112,13 @@ var ProgramRn = (function () {
     ProgramRn.prototype.main = function () {
         this.changeTime();
         watch_obj_1.$watch(timer_1.timerRn, ['runTime'], function () {
-            console.log(this.runTime);
             draw_snake_1.drawSnake.draw(snake_1.snakeObj.newSnake());
         });
     };
     ProgramRn.prototype.changeTime = function () {
         setInterval(function () {
             timer_1.timerRn.forwardTime();
-        }, 3000);
+        }, 500);
     };
     return ProgramRn;
 }());
@@ -132,29 +130,38 @@ exports.programRn = programRn;
 var direction_1 = require('./direction');
 var Snake = (function () {
     function Snake() {
-        this.body = [
-            { pos: [20, 20],
-                width: 20,
-                height: 20,
-                rotate: 0 },
-            { pos: [40, 20],
-                width: 20,
-                height: 20,
-                rotate: 0 },
-            { pos: [60, 20],
-                width: 30,
-                height: 30,
-                rotate: 0 }
-        ];
+        this.body = [];
+        for (var i = 0; i < 100; i++) {
+            this.body.push({
+                pos: [10 + i * 4, 10],
+                width: 4,
+                height: 4,
+                rotate: 0,
+                color: "rgba(48,163,245," + i / 100 + ")",
+                lineWidth: 1,
+                drawStyle: 'fillRect'
+            });
+        }
+        this.body.push({
+            pos: [10 + 100 * 4, 10],
+            width: 4,
+            height: 4,
+            rotate: 0,
+            color: "rgba(48,163,245,100)",
+            lineWidth: 1,
+            drawStyle: 'strokeRect'
+        });
     }
     Snake.prototype.newSnake = function () {
         var bodyLength = this.body.length;
         for (var i = 0; i < bodyLength - 1; i++) {
-            this.body[i].pos = this.body[i + 1].pos;
+            this.body[i].pos[0] = Number(this.body[i + 1].pos[0]);
+            this.body[i].pos[1] = Number(this.body[i + 1].pos[1]);
             this.body[i].rotate = this.body[i + 1].rotate;
         }
-        this.body[bodyLength - 1].pos[0] += direction_1.directDifine[0] * this.body[bodyLength - 1].width;
-        this.body[bodyLength - 1].pos[1] += direction_1.directDifine[1] * this.body[bodyLength - 1].height;
+        var gap = { gapX: this.body[bodyLength - 1].width, gapY: this.body[bodyLength - 1].height };
+        this.body[bodyLength - 1].pos[0] += direction_1.directDifine.getDir()[0] * gap.gapX;
+        this.body[bodyLength - 1].pos[1] += direction_1.directDifine.getDir()[1] * gap.gapY;
         return this;
     };
     return Snake;
@@ -229,8 +236,8 @@ exports.$watch = $watch;
 },{}],9:[function(require,module,exports){
 "use strict";
 var snakeOpt = {
-    width: 20,
-    height: 20,
+    width: 2,
+    height: 2,
     lineType: 'strokeRect',
     lineWidth: 1,
     color: '#aaa',

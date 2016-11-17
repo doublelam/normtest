@@ -1,6 +1,6 @@
 let snakeOpt = {
-    width: 20,
-    height: 20,
+    width: 2,
+    height: 2,
     lineType: 'strokeRect', //stroke or fill 
     lineWidth: 1,
     color: '#aaa', 
