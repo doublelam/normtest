@@ -5,6 +5,7 @@ var DrawSnake = (function () {
     function DrawSnake() {
     }
     DrawSnake.prototype.draw = function (snake) {
+        dom_obj_1.canTxt.clearRect(0, 0, dom_obj_1.canObj.width, dom_obj_1.canObj.height);
         for (var _i = 0, _a = snake.body; _i < _a.length; _i++) {
             var item = _a[_i];
             console.log(item);

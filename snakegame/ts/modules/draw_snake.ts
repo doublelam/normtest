@@ -1,8 +1,9 @@
 /// <reference path="../interfaces/modules.d.ts" />
-import {canTxt} from './dom_obj';
+import {canTxt,canObj} from './dom_obj';
 import {snakeOpt} from '../options/snake_option';
 class DrawSnake{
     draw(snake: snake): any{
+        canTxt.clearRect(0, 0, canObj.width, canObj.height);
         for (let item of snake.body){
             console.log(item);
             canTxt.fillStyle = snakeOpt.color;
