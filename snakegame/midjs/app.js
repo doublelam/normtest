@@ -7,9 +7,9 @@ var AppLaunch = (function () {
     }
     AppLaunch.prototype.main = function () {
         draw_snake_1.drawSnake.draw(snake_1.snakeObj);
+        program_run_1.programRn.main();
     };
     return AppLaunch;
 }());
 var appLaunch = new AppLaunch();
 appLaunch.main();
-program_run_1.programRn.main();

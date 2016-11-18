@@ -6,8 +6,8 @@ class AppLaunch{
 
     main():void{
         drawSnake.draw(snakeObj);
+        programRn.main();
     }
 }
 let appLaunch = new AppLaunch();
 appLaunch.main();
-programRn.main();

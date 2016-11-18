@@ -1,18 +1,26 @@
 "use strict";
+var random_1 = require('../utils/random');
 var Direction = (function () {
     function Direction() {
         this.direction = [1, 0];
         this.getMouseEv();
+        this.randomDirecChange();
     }
     Direction.prototype.getDir = function () {
         return this.direction;
     };
     Direction.prototype.setDir = function (dx, dy) {
-        if (dx, dy === 1 || 0) {
-            this.direction[0] = dx;
-            this.direction[1] = dy;
-        }
+        if (dx === void 0) { dx = this.direction[0]; }
+        if (dy === void 0) { dy = this.direction[1]; }
+        this.direction[0] = dx;
+        this.direction[1] = dy;
         return this.direction;
+    };
+    Direction.prototype.randomDirecChange = function () {
+        var _this = this;
+        setInterval(function () {
+            _this.setDir(random_1.random.getOne([0, 1, -1]), random_1.random.getOne([0, 1, -1]));
+        }, 20);
     };
     Direction.prototype.getMouseEv = function () {
         var _this = this;
@@ -40,9 +48,7 @@ var Direction = (function () {
                     direcClear();
                     _this.direction[1] = 1;
                     break;
-                default:
-                    ;
-                    break;
+                default: break;
             }
         };
     };

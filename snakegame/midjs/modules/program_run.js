@@ -15,7 +15,7 @@ var ProgramRn = (function () {
     ProgramRn.prototype.changeTime = function () {
         setInterval(function () {
             timer_1.timerRn.forwardTime();
-        }, 500);
+        }, 20);
     };
     return ProgramRn;
 }());

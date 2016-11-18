@@ -8,29 +8,37 @@ var AppLaunch = (function () {
     }
     AppLaunch.prototype.main = function () {
         draw_snake_1.drawSnake.draw(snake_1.snakeObj);
+        program_run_1.programRn.main();
     };
     return AppLaunch;
 }());
 var appLaunch = new AppLaunch();
 appLaunch.main();
-program_run_1.programRn.main();
 
 },{"./modules/draw_snake":4,"./modules/program_run":5,"./modules/snake":6}],2:[function(require,module,exports){
 "use strict";
+var random_1 = require('../utils/random');
 var Direction = (function () {
     function Direction() {
         this.direction = [1, 0];
         this.getMouseEv();
+        this.randomDirecChange();
     }
     Direction.prototype.getDir = function () {
         return this.direction;
     };
     Direction.prototype.setDir = function (dx, dy) {
-        if (dx, dy === 1 || 0) {
-            this.direction[0] = dx;
-            this.direction[1] = dy;
-        }
+        if (dx === void 0) { dx = this.direction[0]; }
+        if (dy === void 0) { dy = this.direction[1]; }
+        this.direction[0] = dx;
+        this.direction[1] = dy;
         return this.direction;
+    };
+    Direction.prototype.randomDirecChange = function () {
+        var _this = this;
+        setInterval(function () {
+            _this.setDir(random_1.random.getOne([0, 1, -1]), random_1.random.getOne([0, 1, -1]));
+        }, 20);
     };
     Direction.prototype.getMouseEv = function () {
         var _this = this;
@@ -58,9 +66,7 @@ var Direction = (function () {
                     direcClear();
                     _this.direction[1] = 1;
                     break;
-                default:
-                    ;
-                    break;
+                default: break;
             }
         };
     };
@@ -69,7 +75,7 @@ var Direction = (function () {
 var directDifine = new Direction();
 exports.directDifine = directDifine;
 
-},{}],3:[function(require,module,exports){
+},{"../utils/random":10}],3:[function(require,module,exports){
 "use strict";
 var canObj = document.getElementById('canvas-ground');
 exports.canObj = canObj;
@@ -118,7 +124,7 @@ var ProgramRn = (function () {
     ProgramRn.prototype.changeTime = function () {
         setInterval(function () {
             timer_1.timerRn.forwardTime();
-        }, 500);
+        }, 20);
     };
     return ProgramRn;
 }());
@@ -128,10 +134,12 @@ exports.programRn = programRn;
 },{"./draw_snake":4,"./snake":6,"./timer":7,"./watch_obj":8}],6:[function(require,module,exports){
 "use strict";
 var direction_1 = require('./direction');
+var dom_obj_1 = require('./dom_obj');
+var random_1 = require('../utils/random');
 var Snake = (function () {
     function Snake() {
         this.body = [];
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < 10000; i++) {
             this.body.push({
                 pos: [10 + i * 4, 10],
                 width: 4,
@@ -160,6 +168,33 @@ var Snake = (function () {
             this.body[i].rotate = this.body[i + 1].rotate;
         }
         var gap = { gapX: this.body[bodyLength - 1].width, gapY: this.body[bodyLength - 1].height };
+        var snakeHead = [this.body[bodyLength - 1].pos[0], this.body[bodyLength - 1].pos[1]];
+        var direcOperate = [
+            function () { direction_1.directDifine.setDir(0, -1); },
+            function () { direction_1.directDifine.setDir(0, 1); },
+            function () { direction_1.directDifine.setDir(-1, 0); },
+            function () { direction_1.directDifine.setDir(1, 0); }
+        ];
+        if (snakeHead[0] <= (0 + gap.gapX)) {
+            console.log('left');
+            console.log(random_1.random.getOne([0, 1, 3]));
+            direcOperate[random_1.random.getOne([0, 1, 3])]();
+        }
+        if (snakeHead[0] >= (dom_obj_1.canObj.width - gap.gapX)) {
+            console.log('right');
+            console.log(random_1.random.getOne([0, 1, 2]));
+            direcOperate[random_1.random.getOne([0, 1, 2])]();
+        }
+        if (snakeHead[1] <= (0 + gap.gapY)) {
+            console.log('top');
+            console.log(random_1.random.getOne([1, 2, 3]));
+            direcOperate[random_1.random.getOne([1, 2, 3])]();
+        }
+        if (snakeHead[1] >= (dom_obj_1.canObj.height - gap.gapY)) {
+            console.log('bottom');
+            console.log(random_1.random.getOne([0, 2, 3]));
+            direcOperate[random_1.random.getOne([0, 2, 3])]();
+        }
         this.body[bodyLength - 1].pos[0] += direction_1.directDifine.getDir()[0] * gap.gapX;
         this.body[bodyLength - 1].pos[1] += direction_1.directDifine.getDir()[1] * gap.gapY;
         return this;
@@ -169,7 +204,7 @@ var Snake = (function () {
 var snakeObj = new Snake();
 exports.snakeObj = snakeObj;
 
-},{"./direction":2}],7:[function(require,module,exports){
+},{"../utils/random":10,"./direction":2,"./dom_obj":3}],7:[function(require,module,exports){
 "use strict";
 var Timer = (function () {
     function Timer(initTime) {
@@ -243,5 +278,20 @@ var snakeOpt = {
     color: '#aaa',
 };
 exports.snakeOpt = snakeOpt;
+
+},{}],10:[function(require,module,exports){
+"use strict";
+var Random = (function () {
+    function Random() {
+    }
+    Random.prototype.getOne = function (items) {
+        var _length = items.length;
+        var _count = Math.random() * (_length);
+        return items[Math.floor(_count)];
+    };
+    return Random;
+}());
+var random = new Random();
+exports.random = random;
 
 },{}]},{},[1])

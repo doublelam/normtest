@@ -12,7 +12,7 @@ class ProgramRn{
     public changeTime(){
         setInterval(function(){
             timerRn.forwardTime();
-        },500);
+        },20);
     }
 }
 let programRn = new ProgramRn();
