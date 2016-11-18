@@ -10,9 +10,14 @@ class ProgramRn{
         });
     } 
     public changeTime(){
-        setInterval(function(){
+        // setInterval(function(){
+        //     timerRn.forwardTime();
+        // },0);
+        function rqstAni(){
             timerRn.forwardTime();
-        },20);
+            requestAnimationFrame(rqstAni);
+        }
+        rqstAni();
     }
 }
 let programRn = new ProgramRn();

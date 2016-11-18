@@ -93,7 +93,12 @@ var DrawSnake = (function () {
         dom_obj_1.canTxt.clearRect(0, 0, dom_obj_1.canObj.width, dom_obj_1.canObj.height);
         for (var _i = 0, _a = snake.body; _i < _a.length; _i++) {
             var item = _a[_i];
-            dom_obj_1.canTxt.fillStyle = item.color || snake_option_1.snakeOpt.color;
+            if (item.drawStyle === 'fillRect') {
+                dom_obj_1.canTxt.fillStyle = item.color || snake_option_1.snakeOpt.color;
+            }
+            if (item.drawStyle === 'strokeRect') {
+                dom_obj_1.canTxt.strokeStyle = item.color || snake_option_1.snakeOpt.color;
+            }
             dom_obj_1.canTxt.lineWidth = item.lineWidth || snake_option_1.snakeOpt.lineWidth;
             var dLeft = item.pos[0] - (item.width / 2);
             var dTop = item.pos[1] - (item.height / 2);
@@ -122,9 +127,11 @@ var ProgramRn = (function () {
         });
     };
     ProgramRn.prototype.changeTime = function () {
-        setInterval(function () {
+        function rqstAni() {
             timer_1.timerRn.forwardTime();
-        }, 20);
+            requestAnimationFrame(rqstAni);
+        }
+        rqstAni();
     };
     return ProgramRn;
 }());
@@ -141,23 +148,23 @@ var Snake = (function () {
         this.body = [];
         for (var i = 0; i < 10000; i++) {
             this.body.push({
-                pos: [10 + i * 4, 10],
-                width: 4,
-                height: 4,
+                pos: [10 + i * 10, 10],
+                width: 10,
+                height: 10,
                 rotate: 0,
-                color: "rgba(48,163,245," + i / 100 + ")",
+                color: "rgba(43,154,232,.1)",
                 lineWidth: 1,
-                drawStyle: 'fillRect'
+                drawStyle: 'strokeRect'
             });
         }
         this.body.push({
-            pos: [10 + 100 * 4, 10],
-            width: 4,
-            height: 4,
+            pos: [10 + 100 * 10, 10],
+            width: 10,
+            height: 10,
             rotate: 0,
-            color: "rgba(48,163,245,100)",
+            color: "rgba(221,80,68,1)",
             lineWidth: 1,
-            drawStyle: 'strokeRect'
+            drawStyle: 'fillRect'
         });
     }
     Snake.prototype.newSnake = function () {

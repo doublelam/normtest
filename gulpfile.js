@@ -1,12 +1,14 @@
 'use strict'
 let gulp = require('gulp');
 let ts = require('gulp-typescript');
+let source = require('vinyl-source-stream');
 let tsBrows = require('gulp-typescript-browserify');
 let browserify = require('gulp-browserify');
+// let browserify = require('browserify');
 const TSCONFIG = require('./tsconfig.json');
 const SRC_PATH = {
-    typescript: ['snakegame/ts/**'],
-    browserify: ['snakegame/midjs/*.js','snakegame/midjs/**/*.js']
+    typescript: ['snakegame/ts/**/*.ts'],
+    browserify: ['snakegame/midjs/*.js']
 }
 const TAR_PATH = {
     midjs: 'snakegame/midjs/',
@@ -17,28 +19,30 @@ const WATCH_PATH = {
     midjs: 'snakegame/midjs/**'
 }
 const OPTIONS = {
-} 
+}
 
-
+let typescriptTimer = null;
 gulp.task('typescript',function(){
-    try{
+    clearTimeout(typescriptTimer);
+    function tsFunc(){
         gulp.src(SRC_PATH.typescript)
         .pipe(ts(TSCONFIG))
         .pipe(gulp.dest(TAR_PATH.midjs))
-    }catch(err){
-        console.log('typescript error',err);
     }
+    typescriptTimer = setTimeout(tsFunc,200);
     
 });
+let browserTimer = null;
 gulp.task('browserify',function(){
-    try{
+    clearTimeout(browserTimer);
+    function browserFunc(){
+        console.time('browserify');
         gulp.src(SRC_PATH.browserify)
         .pipe(browserify())
         .pipe(gulp.dest(TAR_PATH.destjs))
-    }catch(err){
-        console.log('browserify err',err);
+        console.timeEnd('browserify');
     }
-    
+    browserTimer = setTimeout(browserFunc,800);
 });
 gulp.task('watch',function(){
     gulp.watch(WATCH_PATH.ts,['typescript']);

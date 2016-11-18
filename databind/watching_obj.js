@@ -1,7 +1,7 @@
 
 function watchObj() {
     return (obj,keys,callback) => {
-        let propVal = {};
+        let propVal = {}; 
         keys.forEach((item,index) => {
             this['fak' + item] = obj[item] || '';
             propVal['fak' + item] = {

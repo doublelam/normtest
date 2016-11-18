@@ -8,7 +8,12 @@ var DrawSnake = (function () {
         dom_obj_1.canTxt.clearRect(0, 0, dom_obj_1.canObj.width, dom_obj_1.canObj.height);
         for (var _i = 0, _a = snake.body; _i < _a.length; _i++) {
             var item = _a[_i];
-            dom_obj_1.canTxt.fillStyle = item.color || snake_option_1.snakeOpt.color;
+            if (item.drawStyle === 'fillRect') {
+                dom_obj_1.canTxt.fillStyle = item.color || snake_option_1.snakeOpt.color;
+            }
+            if (item.drawStyle === 'strokeRect') {
+                dom_obj_1.canTxt.strokeStyle = item.color || snake_option_1.snakeOpt.color;
+            }
             dom_obj_1.canTxt.lineWidth = item.lineWidth || snake_option_1.snakeOpt.lineWidth;
             var dLeft = item.pos[0] - (item.width / 2);
             var dTop = item.pos[1] - (item.height / 2);

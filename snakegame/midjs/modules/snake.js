@@ -7,23 +7,23 @@ var Snake = (function () {
         this.body = [];
         for (var i = 0; i < 10000; i++) {
             this.body.push({
-                pos: [10 + i * 4, 10],
-                width: 4,
-                height: 4,
+                pos: [10 + i * 10, 10],
+                width: 10,
+                height: 10,
                 rotate: 0,
-                color: "rgba(48,163,245," + i / 100 + ")",
+                color: "rgba(43,154,232,.1)",
                 lineWidth: 1,
-                drawStyle: 'fillRect'
+                drawStyle: 'strokeRect'
             });
         }
         this.body.push({
-            pos: [10 + 100 * 4, 10],
-            width: 4,
-            height: 4,
+            pos: [10 + 100 * 10, 10],
+            width: 10,
+            height: 10,
             rotate: 0,
-            color: "rgba(48,163,245,100)",
+            color: "rgba(221,80,68,1)",
             lineWidth: 1,
-            drawStyle: 'strokeRect'
+            drawStyle: 'fillRect'
         });
     }
     Snake.prototype.newSnake = function () {

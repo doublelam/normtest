@@ -13,9 +13,11 @@ var ProgramRn = (function () {
         });
     };
     ProgramRn.prototype.changeTime = function () {
-        setInterval(function () {
+        function rqstAni() {
             timer_1.timerRn.forwardTime();
-        }, 20);
+            requestAnimationFrame(rqstAni);
+        }
+        rqstAni();
     };
     return ProgramRn;
 }());
