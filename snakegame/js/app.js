@@ -152,9 +152,9 @@ var Snake = (function () {
                 width: 10,
                 height: 10,
                 rotate: 0,
-                color: "rgba(43,154,232,.1)",
+                color: "rgba(" + Number(Math.floor(Math.random() * 255)) + "," + Number(Math.floor(Math.random() * 255)) + "," + Number(Math.floor(Math.random() * 255)) + ",.1)",
                 lineWidth: 1,
-                drawStyle: 'strokeRect'
+                drawStyle: 'fillRect'
             });
         }
         this.body.push({
