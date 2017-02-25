@@ -24,5 +24,4 @@ var WatchObj = (function () {
     };
     return WatchObj;
 }());
-var $watch = new WatchObj().watch;
-exports.$watch = $watch;
+exports.$watch = new WatchObj().watch;

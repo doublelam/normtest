@@ -1,9 +1,9 @@
 'use strict'
-let gulp = require('gulp');
-let ts = require('gulp-typescript');
-let source = require('vinyl-source-stream');
-let tsBrows = require('gulp-typescript-browserify');
-let browserify = require('gulp-browserify');
+const gulp = require('gulp');
+const ts = require('gulp-typescript');
+const source = require('vinyl-source-stream');
+const tsBrows = require('gulp-typescript-browserify');
+const browserify = require('gulp-browserify');
 // let browserify = require('browserify');
 const TSCONFIG = require('./tsconfig.json');
 const SRC_PATH = {

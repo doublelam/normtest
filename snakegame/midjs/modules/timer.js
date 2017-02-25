@@ -28,5 +28,4 @@ var Timer = (function () {
     };
     return Timer;
 }());
-var timerRn = new Timer(0);
-exports.timerRn = timerRn;
+exports.timerRn = new Timer(0);

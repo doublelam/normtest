@@ -27,5 +27,4 @@ class Timer{
     }
 }
 
-let timerRn = new Timer(0);
-export {timerRn};
+export const timerRn = new Timer(0);

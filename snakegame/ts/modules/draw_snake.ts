@@ -1,9 +1,18 @@
 /// <reference path="../interfaces/modules.d.ts" />
 import {canTxt,canObj} from './dom_obj';
 import {snakeOpt} from '../options/snake_option';
+import {feedMachine} from './feed_machine';
+
 class DrawSnake{
     draw(snake: snake): any{
         canTxt.clearRect(0, 0, canObj.width, canObj.height);
+        canTxt.fillStyle = feedMachine.color;
+        canTxt.fillRect(
+            feedMachine.leftTop[0], 
+            feedMachine.leftTop[1],
+            feedMachine.width,
+            feedMachine.height
+        );
         for (let item of snake.body){
             if(item.drawStyle === 'fillRect'){
                 canTxt.fillStyle = item.color || snakeOpt.color;
@@ -16,9 +25,10 @@ class DrawSnake{
             let dTop = item.pos[1] - (item.height / 2);
             canTxt[item.drawStyle || snakeOpt.lineType](dLeft,dTop,item.width,item.height);
         }
-        return this.draw;
+        
+
+        return;
     }
 }
 
-let drawSnake = new DrawSnake();
-export {drawSnake}; 
+export const drawSnake = new DrawSnake();

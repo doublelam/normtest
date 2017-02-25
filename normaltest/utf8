@@ -1,0 +1,1 @@
+An object whose own enumerable properties constitute descriptors for the properties to be defined or modified. Property descriptors present in objects come in two main flavors: data descriptors and accessor descriptors (see Object.defineProperty() for more details). Descriptors have the following keys:

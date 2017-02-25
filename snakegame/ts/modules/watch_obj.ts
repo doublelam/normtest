@@ -20,5 +20,4 @@ class WatchObj {
         Object.defineProperties(obj,propVal);
     }
 } 
-let $watch = new WatchObj().watch;
-export {$watch};
+export const $watch = new WatchObj().watch;

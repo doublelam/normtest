@@ -1,8 +1,8 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
-var snake_1 = require('./modules/snake');
-var draw_snake_1 = require('./modules/draw_snake');
-var program_run_1 = require('./modules/program_run');
+var snake_1 = require("./modules/snake");
+var draw_snake_1 = require("./modules/draw_snake");
+var program_run_1 = require("./modules/program_run");
 var AppLaunch = (function () {
     function AppLaunch() {
     }
@@ -15,21 +15,121 @@ var AppLaunch = (function () {
 var appLaunch = new AppLaunch();
 appLaunch.main();
 
-},{"./modules/draw_snake":4,"./modules/program_run":5,"./modules/snake":6}],2:[function(require,module,exports){
+},{"./modules/draw_snake":6,"./modules/program_run":8,"./modules/snake":9}],2:[function(require,module,exports){
 "use strict";
-var random_1 = require('../utils/random');
+var dom_obj_1 = require("./dom_obj");
+var snake_1 = require("./snake");
+var feed_machine_1 = require("./feed_machine");
+var program_run_1 = require("./program_run");
+var AlertMaskHandler = (function () {
+    function AlertMaskHandler() {
+    }
+    AlertMaskHandler.prototype.playAgainHandle = function () {
+        dom_obj_1.btnPlayAgain.onclick = function (e) {
+            console.log('play again');
+            console.log(dom_obj_1.alertMask);
+            dom_obj_1.alertMask.className = dom_obj_1.alertMask.className + ' hidden';
+            snake_1.snakeObj.resetFactory();
+            feed_machine_1.feedMachine.feeding();
+            program_run_1.programRn.changeTime(500);
+        };
+    };
+    AlertMaskHandler.prototype.setAlert = function () {
+        var _this = this;
+        var score = (snake_1.snakeObj.body.length - snake_1.snakeObj.bodyStyleInfo.initLength - 1) * 100;
+        dom_obj_1.scoreTxt.innerText = '0';
+        dom_obj_1.alertMask.className = dom_obj_1.alertMask.className.replace(' hidden', '');
+        this.intervalNum && clearInterval(this.intervalNum);
+        this.intervalNum = setInterval(function () {
+            var temScore = Number(dom_obj_1.scoreTxt.innerText) + 5;
+            dom_obj_1.scoreTxt.innerText = "" + temScore;
+            if (temScore >= score) {
+                dom_obj_1.scoreTxt.innerText = "" + score;
+                clearInterval(_this.intervalNum);
+            }
+        }, 10);
+    };
+    return AlertMaskHandler;
+}());
+exports.AlertMaskHandler = AlertMaskHandler;
+exports.alertHandle = new AlertMaskHandler();
+
+},{"./dom_obj":5,"./feed_machine":7,"./program_run":8,"./snake":9}],3:[function(require,module,exports){
+"use strict";
+var extremum_1 = require("../utils/extremum");
+var CrashCheck = (function () {
+    function CrashCheck() {
+    }
+    CrashCheck.checkCrashWall = function (snake, canvas, callBack) {
+        var canvasWidth = canvas.width;
+        var canvasHeight = canvas.height;
+        var lastNum = snake.body.length - 1;
+        var snakeHeadLeft = snake.body[lastNum].pos[0] - snake.bodyStyleInfo.width / 2;
+        var snakeHeadRight = snake.body[lastNum].pos[0] + snake.bodyStyleInfo.width / 2;
+        var snakeHeadTop = snake.body[lastNum].pos[1] - snake.bodyStyleInfo.height / 2;
+        var snakeHeadBottom = snake.body[lastNum].pos[1] + snake.bodyStyleInfo.height / 2;
+        if (snakeHeadLeft < 0 ||
+            snakeHeadRight > canvasWidth ||
+            snakeHeadTop < 0 ||
+            snakeHeadBottom > canvasHeight) {
+            callBack.call(this);
+        }
+    };
+    CrashCheck.chechCrashItSelf = function (snake, callBack) {
+        var snakeLast = snake.body.length - 1;
+        var headPos = [
+            snake.body[snakeLast].pos[0],
+            snake.body[snakeLast].pos[1]
+        ];
+        var minDistance = extremum_1.Extremum.min([
+            snake.bodyStyleInfo.width,
+            snake.bodyStyleInfo.height
+        ]);
+        for (var i = 0; i < snakeLast; i++) {
+            var bodyGap = [
+                Math.abs(snake.body[i].pos[0] - headPos[0]),
+                Math.abs(snake.body[i].pos[1] - headPos[1])
+            ];
+            if (extremum_1.Extremum.max(bodyGap) < minDistance) {
+                callBack.call(this);
+            }
+        }
+    };
+    CrashCheck.checkCrashFood = function (snake, food, callBack) {
+        var snakeLast = snake.body.length - 1;
+        var headPos = [
+            snake.body[snakeLast].pos[0],
+            snake.body[snakeLast].pos[1]
+        ];
+        var bodyGap = [
+            Math.abs(food.leftTop[0] + (food.width / 2) - headPos[0]),
+            Math.abs(food.leftTop[1] + (food.height / 2) - headPos[1])
+        ];
+        if (extremum_1.Extremum.max(bodyGap) < extremum_1.Extremum.max([food.width, food.height])) {
+            callBack.call(this);
+        }
+    };
+    return CrashCheck;
+}());
+exports.CrashCheck = CrashCheck;
+
+},{"../utils/extremum":14}],4:[function(require,module,exports){
+"use strict";
+var random_1 = require("../utils/random");
 var Direction = (function () {
     function Direction() {
         this.direction = [1, 0];
         this.getMouseEv();
-        this.randomDirecChange();
     }
     Direction.prototype.getDir = function () {
         return this.direction;
     };
     Direction.prototype.setDir = function (dx, dy) {
-        if (dx === void 0) { dx = this.direction[0]; }
-        if (dy === void 0) { dy = this.direction[1]; }
+        if ((dx + this.direction[0] === 0) ||
+            (dy + this.direction[1] === 0)) {
+            console.log('reverse!');
+            dx = this.direction[0], dy = this.direction[1];
+        }
         this.direction[0] = dx;
         this.direction[1] = dy;
         return this.direction;
@@ -37,7 +137,7 @@ var Direction = (function () {
     Direction.prototype.randomDirecChange = function () {
         var _this = this;
         setInterval(function () {
-            _this.setDir(random_1.random.getOne([0, 1, -1]), random_1.random.getOne([0, 1, -1]));
+            _this.setDir(random_1.Random.getOne([0, 1, -1]), random_1.Random.getOne([0, 1, -1]));
         }, 20);
     };
     Direction.prototype.getMouseEv = function () {
@@ -51,46 +151,49 @@ var Direction = (function () {
             }
             switch (keyCode) {
                 case 38:
-                    direcClear();
-                    _this.direction[1] = -1;
+                    _this.setDir(0, -1);
                     break;
                 case 37:
-                    direcClear();
-                    _this.direction[0] = -1;
+                    _this.setDir(-1, 0);
                     break;
                 case 39:
-                    direcClear();
-                    _this.direction[0] = 1;
+                    _this.setDir(1, 0);
                     break;
                 case 40:
-                    direcClear();
-                    _this.direction[1] = 1;
+                    _this.setDir(0, 1);
                     break;
                 default: break;
             }
         };
+    };
+    Direction.prototype.resetDir = function () {
+        this.direction = [1, 0];
     };
     return Direction;
 }());
 var directDifine = new Direction();
 exports.directDifine = directDifine;
 
-},{"../utils/random":10}],3:[function(require,module,exports){
+},{"../utils/random":15}],5:[function(require,module,exports){
 "use strict";
-var canObj = document.getElementById('canvas-ground');
-exports.canObj = canObj;
-var canTxt = canObj.getContext('2d');
-exports.canTxt = canTxt;
+exports.canObj = document.getElementById('canvas-ground');
+exports.canTxt = exports.canObj.getContext('2d');
+exports.alertMask = document.getElementById('game-alert');
+exports.btnPlayAgain = document.getElementById('btn-play-again');
+exports.scoreTxt = document.getElementById('score-show');
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
-var dom_obj_1 = require('./dom_obj');
-var snake_option_1 = require('../options/snake_option');
+var dom_obj_1 = require("./dom_obj");
+var snake_option_1 = require("../options/snake_option");
+var feed_machine_1 = require("./feed_machine");
 var DrawSnake = (function () {
     function DrawSnake() {
     }
     DrawSnake.prototype.draw = function (snake) {
         dom_obj_1.canTxt.clearRect(0, 0, dom_obj_1.canObj.width, dom_obj_1.canObj.height);
+        dom_obj_1.canTxt.fillStyle = feed_machine_1.feedMachine.color;
+        dom_obj_1.canTxt.fillRect(feed_machine_1.feedMachine.leftTop[0], feed_machine_1.feedMachine.leftTop[1], feed_machine_1.feedMachine.width, feed_machine_1.feedMachine.height);
         for (var _i = 0, _a = snake.body; _i < _a.length; _i++) {
             var item = _a[_i];
             if (item.drawStyle === 'fillRect') {
@@ -104,78 +207,157 @@ var DrawSnake = (function () {
             var dTop = item.pos[1] - (item.height / 2);
             dom_obj_1.canTxt[item.drawStyle || snake_option_1.snakeOpt.lineType](dLeft, dTop, item.width, item.height);
         }
-        return this.draw;
+        return;
     };
     return DrawSnake;
 }());
-var drawSnake = new DrawSnake();
-exports.drawSnake = drawSnake;
+exports.drawSnake = new DrawSnake();
 
-},{"../options/snake_option":9,"./dom_obj":3}],5:[function(require,module,exports){
+},{"../options/snake_option":12,"./dom_obj":5,"./feed_machine":7}],7:[function(require,module,exports){
 "use strict";
-var timer_1 = require('./timer');
-var watch_obj_1 = require('./watch_obj');
-var draw_snake_1 = require('./draw_snake');
-var snake_1 = require('./snake');
+var snake_1 = require("./snake");
+var dom_obj_1 = require("./dom_obj");
+var random_1 = require("../utils/random");
+var FeedMachine = (function () {
+    function FeedMachine() {
+        var snakeWidth = snake_1.snakeObj.bodyStyleInfo.width;
+        var snakeHeight = snake_1.snakeObj.bodyStyleInfo.height;
+        var canWidth = dom_obj_1.canObj.width;
+        var canHeight = dom_obj_1.canObj.height;
+        var randomHorizon = Math.floor(Math.random() * (canWidth / snakeWidth));
+        var randomVerticle = Math.floor(Math.random() * (canHeight / snakeHeight));
+        this.width = snake_1.snakeObj.bodyStyleInfo.width;
+        this.height = snake_1.snakeObj.bodyStyleInfo.height;
+        this.leftTop = [randomHorizon * this.width, randomVerticle * this.height];
+        this.color = random_1.Random.randomColor();
+        console.log(this.width, this.height, this.color, this.leftTop);
+    }
+    FeedMachine.prototype.feeding = function (pos, color, width, height) {
+        var snakeWidth = snake_1.snakeObj.bodyStyleInfo.width;
+        var snakeHeight = snake_1.snakeObj.bodyStyleInfo.height;
+        var canWidth = dom_obj_1.canObj.width;
+        var canHeight = dom_obj_1.canObj.height;
+        var randomHorizon = Math.floor(Math.random() * (canWidth / snakeWidth));
+        var randomVerticle = Math.floor(Math.random() * (canHeight / snakeHeight));
+        this.width = width || snakeWidth;
+        this.height = height || snakeHeight;
+        this.leftTop = [randomHorizon * this.width, randomVerticle * this.height];
+        this.color = color || random_1.Random.randomColor();
+        return this;
+    };
+    return FeedMachine;
+}());
+exports.FeedMachine = FeedMachine;
+exports.feedMachine = new FeedMachine();
+
+},{"../utils/random":15,"./dom_obj":5,"./snake":9}],8:[function(require,module,exports){
+"use strict";
+var timer_1 = require("./timer");
+var watch_obj_1 = require("./watch_obj");
+var draw_snake_1 = require("./draw_snake");
+var snake_1 = require("./snake");
+var crash_check_1 = require("./crash_check");
+var dom_obj_1 = require("./dom_obj");
+var feed_machine_1 = require("./feed_machine");
+var alert_mask_handler_1 = require("./alert_mask_handler");
 var ProgramRn = (function () {
     function ProgramRn() {
     }
     ProgramRn.prototype.main = function () {
-        this.changeTime();
+        var _this = this;
+        this.changeTime(500);
         watch_obj_1.$watch(timer_1.timerRn, ['runTime'], function () {
             draw_snake_1.drawSnake.draw(snake_1.snakeObj.newSnake());
+            crash_check_1.CrashCheck.checkCrashWall(snake_1.snakeObj, dom_obj_1.canObj, function () {
+                _this.pause();
+                alert_mask_handler_1.alertHandle.setAlert();
+            });
+            crash_check_1.CrashCheck.chechCrashItSelf(snake_1.snakeObj, function () {
+                _this.pause();
+                alert_mask_handler_1.alertHandle.setAlert();
+            });
+            crash_check_1.CrashCheck.checkCrashFood(snake_1.snakeObj, feed_machine_1.feedMachine, function () {
+                feed_machine_1.feedMachine.feeding();
+                snake_1.snakeObj.growUp();
+            });
         });
+        alert_mask_handler_1.alertHandle.playAgainHandle();
     };
-    ProgramRn.prototype.changeTime = function () {
-        function rqstAni() {
+    ProgramRn.prototype.changeTime = function (delay) {
+        this.intervalNum && clearInterval(this.intervalNum);
+        this.intervalNum = setInterval(function () {
             timer_1.timerRn.forwardTime();
-            requestAnimationFrame(rqstAni);
-        }
-        rqstAni();
+        }, delay);
+    };
+    ProgramRn.prototype.pause = function () {
+        clearInterval(this.intervalNum);
+    };
+    ProgramRn.prototype.stop = function () {
     };
     return ProgramRn;
 }());
-var programRn = new ProgramRn();
-exports.programRn = programRn;
+exports.programRn = new ProgramRn();
 
-},{"./draw_snake":4,"./snake":6,"./timer":7,"./watch_obj":8}],6:[function(require,module,exports){
+},{"./alert_mask_handler":2,"./crash_check":3,"./dom_obj":5,"./draw_snake":6,"./feed_machine":7,"./snake":9,"./timer":10,"./watch_obj":11}],9:[function(require,module,exports){
 "use strict";
-var direction_1 = require('./direction');
-var dom_obj_1 = require('./dom_obj');
-var random_1 = require('../utils/random');
+var direction_1 = require("./direction");
+var dom_obj_1 = require("./dom_obj");
+var random_1 = require("../utils/random");
+var snake_option_1 = require("../options/snake_option");
+var copy_obj_1 = require("../utils/copy_obj");
 var Snake = (function () {
     function Snake() {
+        this.bodyStyleInfo = {
+            startPos: [5, 5],
+            initLength: 10,
+            width: 10,
+            height: 10,
+            isAutoRun: snake_option_1.snakeOpt.ifAutoRun
+        };
+        this.init();
+    }
+    Snake.prototype.init = function () {
         this.body = [];
-        for (var i = 0; i < 10000; i++) {
+        for (var i = 0; i < this.bodyStyleInfo.initLength; i++) {
             this.body.push({
-                pos: [10 + i * 10, 10],
-                width: 10,
-                height: 10,
+                pos: [this.bodyStyleInfo.startPos[0] + i * this.bodyStyleInfo.width, this.bodyStyleInfo.startPos[1]],
+                width: this.bodyStyleInfo.width,
+                height: this.bodyStyleInfo.height,
                 rotate: 0,
-                color: "rgba(" + Number(Math.floor(Math.random() * 255)) + "," + Number(Math.floor(Math.random() * 255)) + "," + Number(Math.floor(Math.random() * 255)) + ",.1)",
+                color: '#aaa',
                 lineWidth: 1,
                 drawStyle: 'fillRect'
             });
         }
         this.body.push({
-            pos: [10 + 100 * 10, 10],
-            width: 10,
-            height: 10,
+            pos: [this.bodyStyleInfo.startPos[0] + this.bodyStyleInfo.initLength * this.bodyStyleInfo.initLength, this.bodyStyleInfo.startPos[1]],
+            width: this.bodyStyleInfo.width,
+            height: this.bodyStyleInfo.height,
             rotate: 0,
             color: "rgba(221,80,68,1)",
             lineWidth: 1,
             drawStyle: 'fillRect'
         });
-    }
+    };
     Snake.prototype.newSnake = function () {
         var bodyLength = this.body.length;
         for (var i = 0; i < bodyLength - 1; i++) {
-            this.body[i].pos[0] = Number(this.body[i + 1].pos[0]);
-            this.body[i].pos[1] = Number(this.body[i + 1].pos[1]);
+            var tempPos = [];
+            tempPos.push(this.body[i + 1].pos[0]);
+            tempPos.push(this.body[i + 1].pos[1]);
+            this.body[i].pos = tempPos;
             this.body[i].rotate = this.body[i + 1].rotate;
         }
         var gap = { gapX: this.body[bodyLength - 1].width, gapY: this.body[bodyLength - 1].height };
         var snakeHead = [this.body[bodyLength - 1].pos[0], this.body[bodyLength - 1].pos[1]];
+        if (this.bodyStyleInfo.isAutoRun) {
+            this.autoRun(snakeHead, gap);
+        }
+        this.body[bodyLength - 1].pos[0] += direction_1.directDifine.getDir()[0] * gap.gapX;
+        this.body[bodyLength - 1].pos[1] += direction_1.directDifine.getDir()[1] * gap.gapY;
+        return this;
+    };
+    Snake.prototype.autoRun = function (snakeHead, gap) {
         var direcOperate = [
             function () { direction_1.directDifine.setDir(0, -1); },
             function () { direction_1.directDifine.setDir(0, 1); },
@@ -184,34 +366,38 @@ var Snake = (function () {
         ];
         if (snakeHead[0] <= (0 + gap.gapX)) {
             console.log('left');
-            console.log(random_1.random.getOne([0, 1, 3]));
-            direcOperate[random_1.random.getOne([0, 1, 3])]();
+            console.log(random_1.Random.getOne([0, 1, 3]));
+            direcOperate[random_1.Random.getOne([0, 1, 3])]();
         }
         if (snakeHead[0] >= (dom_obj_1.canObj.width - gap.gapX)) {
             console.log('right');
-            console.log(random_1.random.getOne([0, 1, 2]));
-            direcOperate[random_1.random.getOne([0, 1, 2])]();
+            console.log(random_1.Random.getOne([0, 1, 2]));
+            direcOperate[random_1.Random.getOne([0, 1, 2])]();
         }
         if (snakeHead[1] <= (0 + gap.gapY)) {
             console.log('top');
-            console.log(random_1.random.getOne([1, 2, 3]));
-            direcOperate[random_1.random.getOne([1, 2, 3])]();
+            console.log(random_1.Random.getOne([1, 2, 3]));
+            direcOperate[random_1.Random.getOne([1, 2, 3])]();
         }
         if (snakeHead[1] >= (dom_obj_1.canObj.height - gap.gapY)) {
             console.log('bottom');
-            console.log(random_1.random.getOne([0, 2, 3]));
-            direcOperate[random_1.random.getOne([0, 2, 3])]();
+            console.log(random_1.Random.getOne([0, 2, 3]));
+            direcOperate[random_1.Random.getOne([0, 2, 3])]();
         }
-        this.body[bodyLength - 1].pos[0] += direction_1.directDifine.getDir()[0] * gap.gapX;
-        this.body[bodyLength - 1].pos[1] += direction_1.directDifine.getDir()[1] * gap.gapY;
-        return this;
+    };
+    Snake.prototype.resetFactory = function () {
+        this.init();
+        direction_1.directDifine.resetDir();
+    };
+    Snake.prototype.growUp = function () {
+        this.body.unshift(copy_obj_1.CopyObj.copyObj(this.body[0]));
     };
     return Snake;
 }());
-var snakeObj = new Snake();
-exports.snakeObj = snakeObj;
+exports.Snake = Snake;
+exports.snakeObj = new Snake();
 
-},{"../utils/random":10,"./direction":2,"./dom_obj":3}],7:[function(require,module,exports){
+},{"../options/snake_option":12,"../utils/copy_obj":13,"../utils/random":15,"./direction":4,"./dom_obj":5}],10:[function(require,module,exports){
 "use strict";
 var Timer = (function () {
     function Timer(initTime) {
@@ -242,10 +428,9 @@ var Timer = (function () {
     };
     return Timer;
 }());
-var timerRn = new Timer(0);
-exports.timerRn = timerRn;
+exports.timerRn = new Timer(0);
 
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 var WatchObj = (function () {
     function WatchObj() {
@@ -272,33 +457,107 @@ var WatchObj = (function () {
     };
     return WatchObj;
 }());
-var $watch = new WatchObj().watch;
-exports.$watch = $watch;
+exports.$watch = new WatchObj().watch;
 
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
-var snakeOpt = {
+exports.snakeOpt = {
     width: 2,
     height: 2,
     lineType: 'strokeRect',
     lineWidth: 1,
     color: '#aaa',
+    ifAutoRun: false
 };
-exports.snakeOpt = snakeOpt;
 
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
+"use strict";
+var CopyObj = (function () {
+    function CopyObj() {
+    }
+    CopyObj.copyObj = function (obj) {
+        var imageObject = {};
+        for (var key in obj) {
+            if (typeof obj[key] === 'object') {
+                if (obj[key] instanceof Array) {
+                    CopyObj.copyArr(obj[key]);
+                }
+                else if (obj[key] instanceof Object) {
+                    CopyObj.copyObj(obj[key]);
+                }
+            }
+            else {
+                imageObject[key] = obj[key];
+            }
+        }
+        return imageObject;
+    };
+    CopyObj.copyArr = function (arr) {
+        var imageArray = [];
+        for (var index in arr) {
+            if (typeof arr[index] === 'object') {
+                if (arr[index] instanceof Array) {
+                    CopyObj.copyArr(arr[index]);
+                }
+                else if (arr[index] instanceof Object) {
+                    CopyObj.copyObj(arr[index]);
+                }
+            }
+            else {
+                imageArray[index] = arr[index];
+            }
+        }
+        return imageArray;
+    };
+    return CopyObj;
+}());
+exports.CopyObj = CopyObj;
+
+},{}],14:[function(require,module,exports){
+"use strict";
+var Extremum = (function () {
+    function Extremum() {
+    }
+    Extremum.min = function (numbers) {
+        var tempNum = numbers[0];
+        for (var _i = 0, numbers_1 = numbers; _i < numbers_1.length; _i++) {
+            var val = numbers_1[_i];
+            if (tempNum > val) {
+                tempNum = val;
+            }
+        }
+        return tempNum;
+    };
+    Extremum.max = function (numbers) {
+        var tempNum = numbers[0];
+        for (var _i = 0, numbers_2 = numbers; _i < numbers_2.length; _i++) {
+            var val = numbers_2[_i];
+            if (tempNum < val) {
+                tempNum = val;
+            }
+        }
+        return tempNum;
+    };
+    return Extremum;
+}());
+exports.Extremum = Extremum;
+
+},{}],15:[function(require,module,exports){
 "use strict";
 var Random = (function () {
     function Random() {
     }
-    Random.prototype.getOne = function (items) {
+    Random.getOne = function (items) {
         var _length = items.length;
         var _count = Math.random() * (_length);
         return items[Math.floor(_count)];
     };
+    Random.randomColor = function (opacity) {
+        if (opacity === void 0) { opacity = '1'; }
+        return "rgba(" + Number(Math.floor(Math.random() * 255)) + "," + Number(Math.floor(Math.random() * 255)) + "," + Number(Math.floor(Math.random() * 255)) + ", " + opacity + ")";
+    };
     return Random;
 }());
-var random = new Random();
-exports.random = random;
+exports.Random = Random;
 
 },{}]},{},[1])

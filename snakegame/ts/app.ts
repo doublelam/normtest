@@ -1,10 +1,10 @@
-import {snakeObj} from './modules/snake';
-import {drawSnake} from './modules/draw_snake';
-import {programRn} from './modules/program_run';
+import { snakeObj } from './modules/snake';
+import { drawSnake } from './modules/draw_snake';
+import { programRn } from './modules/program_run';
 
-class AppLaunch{
+class AppLaunch {
 
-    main():void{
+    main(): void {
         drawSnake.draw(snakeObj);
         programRn.main();
     }
