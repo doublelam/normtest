@@ -31,7 +31,7 @@ var AlertMaskHandler = (function () {
             dom_obj_1.alertMask.className = dom_obj_1.alertMask.className + ' hidden';
             snake_1.snakeObj.resetFactory();
             feed_machine_1.feedMachine.feeding();
-            program_run_1.programRn.changeTime(500);
+            program_run_1.programRn.changeTime(program_run_1.programRn.initSpeed);
         };
     };
     AlertMaskHandler.prototype.setAlert = function () {
@@ -262,10 +262,12 @@ var feed_machine_1 = require("./feed_machine");
 var alert_mask_handler_1 = require("./alert_mask_handler");
 var ProgramRn = (function () {
     function ProgramRn() {
+        this.initSpeed = 500;
+        this.currentSpeed = this.initSpeed;
     }
     ProgramRn.prototype.main = function () {
         var _this = this;
-        this.changeTime(500);
+        this.changeTime(this.initSpeed);
         watch_obj_1.$watch(timer_1.timerRn, ['runTime'], function () {
             draw_snake_1.drawSnake.draw(snake_1.snakeObj.newSnake());
             crash_check_1.CrashCheck.checkCrashWall(snake_1.snakeObj, dom_obj_1.canObj, function () {
@@ -279,6 +281,9 @@ var ProgramRn = (function () {
             crash_check_1.CrashCheck.checkCrashFood(snake_1.snakeObj, feed_machine_1.feedMachine, function () {
                 feed_machine_1.feedMachine.feeding();
                 snake_1.snakeObj.growUp();
+                _this.currentSpeed > 50 ? _this.currentSpeed = _this.currentSpeed - 50 : _this.currentSpeed = 50;
+                console.log('current speed', _this.currentSpeed);
+                _this.changeTime(_this.currentSpeed);
             });
         });
         alert_mask_handler_1.alertHandle.playAgainHandle();

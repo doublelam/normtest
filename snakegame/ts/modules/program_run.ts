@@ -8,8 +8,14 @@ import { feedMachine } from './feed_machine';
 import { alertHandle } from './alert_mask_handler';
 class ProgramRn {
     intervalNum: number;
+    initSpeed: number;
+    currentSpeed: number;
+    constructor(){
+        this.initSpeed = 500;
+        this.currentSpeed = this.initSpeed;
+    }
     main(): void {
-        this.changeTime(500);
+        this.changeTime(this.initSpeed);
         $watch(timerRn, ['runTime'], () => {
             drawSnake.draw(snakeObj.newSnake());
             CrashCheck.checkCrashWall(snakeObj, canObj, () => {
@@ -24,6 +30,9 @@ class ProgramRn {
             CrashCheck.checkCrashFood(snakeObj, feedMachine, () => {
                 feedMachine.feeding();
                 snakeObj.growUp();
+                this.currentSpeed > 50 ? this.currentSpeed = this.currentSpeed - 50 : this.currentSpeed = 50;
+                console.log('current speed', this.currentSpeed);
+                this.changeTime(this.currentSpeed);
                 // this.pause();
             });
         });

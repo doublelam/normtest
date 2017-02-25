@@ -13,7 +13,7 @@ var AlertMaskHandler = (function () {
             dom_obj_1.alertMask.className = dom_obj_1.alertMask.className + ' hidden';
             snake_1.snakeObj.resetFactory();
             feed_machine_1.feedMachine.feeding();
-            program_run_1.programRn.changeTime(500);
+            program_run_1.programRn.changeTime(program_run_1.programRn.initSpeed);
         };
     };
     AlertMaskHandler.prototype.setAlert = function () {

@@ -11,7 +11,7 @@ export class AlertMaskHandler {
             alertMask.className = alertMask.className + ' hidden';
             snakeObj.resetFactory();
             feedMachine.feeding();
-            programRn.changeTime(500);
+            programRn.changeTime(programRn.initSpeed);
         }
     }
 
