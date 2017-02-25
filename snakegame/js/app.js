@@ -34,20 +34,28 @@ var AlertMaskHandler = (function () {
             program_run_1.programRn.changeTime(program_run_1.programRn.initSpeed);
         };
     };
-    AlertMaskHandler.prototype.setAlert = function () {
+    AlertMaskHandler.prototype.setAlert = function (opt) {
         var _this = this;
-        var score = (snake_1.snakeObj.body.length - snake_1.snakeObj.bodyStyleInfo.initLength - 1) * 100;
+        opt && opt.title && (dom_obj_1.alertTitle.innerText = opt.title);
+        opt && opt.btnTex && (dom_obj_1.btnPlayAgain.innerText = opt.btnTex);
+        if (opt && opt.ifScore) {
+            dom_obj_1.scoreTxt.style.display = 'block';
+            var score_1 = (snake_1.snakeObj.body.length - snake_1.snakeObj.bodyStyleInfo.initLength - 1) * 100;
+            this.intervalNum && clearInterval(this.intervalNum);
+            this.intervalNum = setInterval(function () {
+                var temScore = Number(dom_obj_1.scoreTxt.innerText) + 5;
+                dom_obj_1.scoreTxt.innerText = "" + temScore;
+                if (temScore >= score_1) {
+                    dom_obj_1.scoreTxt.innerText = "" + score_1;
+                    clearInterval(_this.intervalNum);
+                }
+            }, 10);
+        }
+        else {
+            dom_obj_1.scoreTxt.style.display = 'none';
+        }
         dom_obj_1.scoreTxt.innerText = '0';
         dom_obj_1.alertMask.className = dom_obj_1.alertMask.className.replace(' hidden', '');
-        this.intervalNum && clearInterval(this.intervalNum);
-        this.intervalNum = setInterval(function () {
-            var temScore = Number(dom_obj_1.scoreTxt.innerText) + 5;
-            dom_obj_1.scoreTxt.innerText = "" + temScore;
-            if (temScore >= score) {
-                dom_obj_1.scoreTxt.innerText = "" + score;
-                clearInterval(_this.intervalNum);
-            }
-        }, 10);
     };
     return AlertMaskHandler;
 }());
@@ -181,6 +189,7 @@ exports.canTxt = exports.canObj.getContext('2d');
 exports.alertMask = document.getElementById('game-alert');
 exports.btnPlayAgain = document.getElementById('btn-play-again');
 exports.scoreTxt = document.getElementById('score-show');
+exports.alertTitle = document.getElementById('text-hint');
 
 },{}],6:[function(require,module,exports){
 "use strict";
@@ -220,17 +229,7 @@ var dom_obj_1 = require("./dom_obj");
 var random_1 = require("../utils/random");
 var FeedMachine = (function () {
     function FeedMachine() {
-        var snakeWidth = snake_1.snakeObj.bodyStyleInfo.width;
-        var snakeHeight = snake_1.snakeObj.bodyStyleInfo.height;
-        var canWidth = dom_obj_1.canObj.width;
-        var canHeight = dom_obj_1.canObj.height;
-        var randomHorizon = Math.floor(Math.random() * (canWidth / snakeWidth));
-        var randomVerticle = Math.floor(Math.random() * (canHeight / snakeHeight));
-        this.width = snake_1.snakeObj.bodyStyleInfo.width;
-        this.height = snake_1.snakeObj.bodyStyleInfo.height;
-        this.leftTop = [randomHorizon * this.width, randomVerticle * this.height];
-        this.color = random_1.Random.randomColor();
-        console.log(this.width, this.height, this.color, this.leftTop);
+        this.feeding([0, 0], 'rgba(0,0,0,0)');
     }
     FeedMachine.prototype.feeding = function (pos, color, width, height) {
         var snakeWidth = snake_1.snakeObj.bodyStyleInfo.width;
@@ -267,16 +266,28 @@ var ProgramRn = (function () {
     }
     ProgramRn.prototype.main = function () {
         var _this = this;
-        this.changeTime(this.initSpeed);
+        alert_mask_handler_1.alertHandle.setAlert({
+            title: 'CLICK TO START',
+            ifScore: false,
+            btnTex: 'START GAME'
+        });
         watch_obj_1.$watch(timer_1.timerRn, ['runTime'], function () {
             draw_snake_1.drawSnake.draw(snake_1.snakeObj.newSnake());
             crash_check_1.CrashCheck.checkCrashWall(snake_1.snakeObj, dom_obj_1.canObj, function () {
                 _this.pause();
-                alert_mask_handler_1.alertHandle.setAlert();
+                alert_mask_handler_1.alertHandle.setAlert({
+                    title: 'YOUR SCORE',
+                    ifScore: true,
+                    btnTex: 'PLAY AGAIN'
+                });
             });
             crash_check_1.CrashCheck.chechCrashItSelf(snake_1.snakeObj, function () {
                 _this.pause();
-                alert_mask_handler_1.alertHandle.setAlert();
+                alert_mask_handler_1.alertHandle.setAlert({
+                    title: 'YOUR SCORE',
+                    ifScore: true,
+                    btnTex: 'PLAY AGAIN'
+                });
             });
             crash_check_1.CrashCheck.checkCrashFood(snake_1.snakeObj, feed_machine_1.feedMachine, function () {
                 feed_machine_1.feedMachine.feeding();

@@ -10,21 +10,34 @@ class ProgramRn {
     intervalNum: number;
     initSpeed: number;
     currentSpeed: number;
-    constructor(){
+    constructor() {
         this.initSpeed = 500;
         this.currentSpeed = this.initSpeed;
     }
     main(): void {
-        this.changeTime(this.initSpeed);
+        // this.changeTime(this.initSpeed);
+        alertHandle.setAlert({
+            title: 'CLICK TO START',
+            ifScore: false,
+            btnTex: 'START GAME'
+        });
         $watch(timerRn, ['runTime'], () => {
             drawSnake.draw(snakeObj.newSnake());
             CrashCheck.checkCrashWall(snakeObj, canObj, () => {
                 this.pause();
-                alertHandle.setAlert();
+                alertHandle.setAlert({
+                    title: 'YOUR SCORE',
+                    ifScore: true,
+                    btnTex: 'PLAY AGAIN'
+                });
             });
             CrashCheck.chechCrashItSelf(snakeObj, () => {
                 this.pause();
-                alertHandle.setAlert();                
+                alertHandle.setAlert({
+                    title: 'YOUR SCORE',
+                    ifScore: true,
+                    btnTex: 'PLAY AGAIN'
+                });
             });
 
             CrashCheck.checkCrashFood(snakeObj, feedMachine, () => {

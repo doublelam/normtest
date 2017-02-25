@@ -7,18 +7,19 @@ export class FeedMachine {
     width: number;
     height: number;
     constructor(){
-        let snakeWidth = snakeObj.bodyStyleInfo.width;
-        let snakeHeight = snakeObj.bodyStyleInfo.height;
-        let canWidth = canObj.width;
-        let canHeight = canObj.height;
-        let randomHorizon = Math.floor(Math.random() * (canWidth / snakeWidth));
-        let randomVerticle = Math.floor(Math.random() * (canHeight / snakeHeight));
-        this.width = snakeObj.bodyStyleInfo.width;
-        this.height = snakeObj.bodyStyleInfo.height;
-        this.leftTop = [randomHorizon * this.width, randomVerticle * this.height];
-        this.color = Random.randomColor();
+        this.feeding([0, 0], 'rgba(0,0,0,0)');
+        // let snakeWidth = snakeObj.bodyStyleInfo.width;
+        // let snakeHeight = snakeObj.bodyStyleInfo.height;
+        // let canWidth = canObj.width;
+        // let canHeight = canObj.height;
+        // let randomHorizon = Math.floor(Math.random() * (canWidth / snakeWidth));
+        // let randomVerticle = Math.floor(Math.random() * (canHeight / snakeHeight));
+        // this.width = snakeObj.bodyStyleInfo.width;
+        // this.height = snakeObj.bodyStyleInfo.height;
+        // this.leftTop = [randomHorizon * this.width, randomVerticle * this.height];
+        // this.color = Random.randomColor();
         
-        console.log(this.width,this.height,this.color,this.leftTop)
+        // console.log(this.width,this.height,this.color,this.leftTop)
     }
     public feeding(
         pos?: Array<number>,

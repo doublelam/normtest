@@ -14,16 +14,28 @@ var ProgramRn = (function () {
     }
     ProgramRn.prototype.main = function () {
         var _this = this;
-        this.changeTime(this.initSpeed);
+        alert_mask_handler_1.alertHandle.setAlert({
+            title: 'CLICK TO START',
+            ifScore: false,
+            btnTex: 'START GAME'
+        });
         watch_obj_1.$watch(timer_1.timerRn, ['runTime'], function () {
             draw_snake_1.drawSnake.draw(snake_1.snakeObj.newSnake());
             crash_check_1.CrashCheck.checkCrashWall(snake_1.snakeObj, dom_obj_1.canObj, function () {
                 _this.pause();
-                alert_mask_handler_1.alertHandle.setAlert();
+                alert_mask_handler_1.alertHandle.setAlert({
+                    title: 'YOUR SCORE',
+                    ifScore: true,
+                    btnTex: 'PLAY AGAIN'
+                });
             });
             crash_check_1.CrashCheck.chechCrashItSelf(snake_1.snakeObj, function () {
                 _this.pause();
-                alert_mask_handler_1.alertHandle.setAlert();
+                alert_mask_handler_1.alertHandle.setAlert({
+                    title: 'YOUR SCORE',
+                    ifScore: true,
+                    btnTex: 'PLAY AGAIN'
+                });
             });
             crash_check_1.CrashCheck.checkCrashFood(snake_1.snakeObj, feed_machine_1.feedMachine, function () {
                 feed_machine_1.feedMachine.feeding();

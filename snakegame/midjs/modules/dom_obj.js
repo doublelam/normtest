@@ -4,3 +4,4 @@ exports.canTxt = exports.canObj.getContext('2d');
 exports.alertMask = document.getElementById('game-alert');
 exports.btnPlayAgain = document.getElementById('btn-play-again');
 exports.scoreTxt = document.getElementById('score-show');
+exports.alertTitle = document.getElementById('text-hint');
