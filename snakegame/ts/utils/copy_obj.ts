@@ -4,9 +4,9 @@ export class CopyObj {
         for (let key in obj) {
             if (typeof obj[key] === 'object') {
                 if (obj[key] instanceof Array) {
-                    CopyObj.copyArr(obj[key]);
-                } else if(obj[key] instanceof Object) {
-                    CopyObj.copyObj(obj[key]);
+                    imageObject[key] = CopyObj.copyArr(obj[key]);
+                } else if (obj[key] instanceof Object) {
+                    imageObject[key] = CopyObj.copyObj(obj[key]);
                 }
             } else {
                 imageObject[key] = obj[key];
@@ -20,9 +20,9 @@ export class CopyObj {
         for (let index in arr) {
             if (typeof arr[index] === 'object') {
                 if (arr[index] instanceof Array) {
-                    CopyObj.copyArr(arr[index]);
-                } else if(arr[index] instanceof Object) {
-                    CopyObj.copyObj(arr[index]);
+                    imageArray[index] = CopyObj.copyArr(arr[index]);
+                } else if (arr[index] instanceof Object) {
+                    imageArray[index] = CopyObj.copyObj(arr[index]);
                 }
             } else {
                 imageArray[index] = arr[index];

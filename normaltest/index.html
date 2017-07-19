@@ -1,0 +1,27 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .input-fake {
+            width: 20px;
+            height: 20px;
+        }
+         .input+.input-fake{
+            background: green;
+         }
+        .input:checked+.input-fake{
+            background: red;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div>
+        <input type="checkbox" class="input">
+        <div class="input-fake"></div>
+    </div>
+</body>
+
+</html>

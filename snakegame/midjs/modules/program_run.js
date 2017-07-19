@@ -22,7 +22,7 @@ var ProgramRn = (function () {
         watch_obj_1.$watch(timer_1.timerRn, ['runTime'], function () {
             draw_snake_1.drawSnake.draw(snake_1.snakeObj.newSnake());
             crash_check_1.CrashCheck.checkCrashWall(snake_1.snakeObj, dom_obj_1.canObj, function () {
-                _this.pause();
+                _this.stop();
                 alert_mask_handler_1.alertHandle.setAlert({
                     title: 'YOUR SCORE',
                     ifScore: true,
@@ -30,7 +30,7 @@ var ProgramRn = (function () {
                 });
             });
             crash_check_1.CrashCheck.chechCrashItSelf(snake_1.snakeObj, function () {
-                _this.pause();
+                _this.stop();
                 alert_mask_handler_1.alertHandle.setAlert({
                     title: 'YOUR SCORE',
                     ifScore: true,
@@ -57,6 +57,8 @@ var ProgramRn = (function () {
         clearInterval(this.intervalNum);
     };
     ProgramRn.prototype.stop = function () {
+        clearInterval(this.intervalNum);
+        this.currentSpeed = this.initSpeed;
     };
     return ProgramRn;
 }());

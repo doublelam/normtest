@@ -2,11 +2,26 @@
 <html>
 
 <head>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html{
+            font-size: 0.3125vw
+        }
+        .test-span{
+            font-size: 24rem;
+        }
+    </style>
 </head>
 
 <body>
     <a href="./page.html">to new page</a>
+    <span class="test-span">T</span>
+
+    <script>
+        document.querySelector('body').onresize = e => 
+        console.log(window
+        .getComputedStyle(document.querySelector('.test-span')).fontSize);
+    </script>
 </body>
 
 </html>

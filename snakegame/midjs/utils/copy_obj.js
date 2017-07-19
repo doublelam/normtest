@@ -7,10 +7,10 @@ var CopyObj = (function () {
         for (var key in obj) {
             if (typeof obj[key] === 'object') {
                 if (obj[key] instanceof Array) {
-                    CopyObj.copyArr(obj[key]);
+                    imageObject[key] = CopyObj.copyArr(obj[key]);
                 }
                 else if (obj[key] instanceof Object) {
-                    CopyObj.copyObj(obj[key]);
+                    imageObject[key] = CopyObj.copyObj(obj[key]);
                 }
             }
             else {
@@ -24,10 +24,10 @@ var CopyObj = (function () {
         for (var index in arr) {
             if (typeof arr[index] === 'object') {
                 if (arr[index] instanceof Array) {
-                    CopyObj.copyArr(arr[index]);
+                    imageArray[index] = CopyObj.copyArr(arr[index]);
                 }
                 else if (arr[index] instanceof Object) {
-                    CopyObj.copyObj(arr[index]);
+                    imageArray[index] = CopyObj.copyObj(arr[index]);
                 }
             }
             else {

@@ -24,7 +24,7 @@ class ProgramRn {
         $watch(timerRn, ['runTime'], () => {
             drawSnake.draw(snakeObj.newSnake());
             CrashCheck.checkCrashWall(snakeObj, canObj, () => {
-                this.pause();
+                this.stop();
                 alertHandle.setAlert({
                     title: 'YOUR SCORE',
                     ifScore: true,
@@ -32,7 +32,7 @@ class ProgramRn {
                 });
             });
             CrashCheck.chechCrashItSelf(snakeObj, () => {
-                this.pause();
+                this.stop();
                 alertHandle.setAlert({
                     title: 'YOUR SCORE',
                     ifScore: true,
@@ -62,7 +62,8 @@ class ProgramRn {
         clearInterval(this.intervalNum);
     }
     stop(): void {
-
+        clearInterval(this.intervalNum);
+        this.currentSpeed = this.initSpeed;
     }
 }
 export const programRn = new ProgramRn();

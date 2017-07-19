@@ -274,7 +274,7 @@ var ProgramRn = (function () {
         watch_obj_1.$watch(timer_1.timerRn, ['runTime'], function () {
             draw_snake_1.drawSnake.draw(snake_1.snakeObj.newSnake());
             crash_check_1.CrashCheck.checkCrashWall(snake_1.snakeObj, dom_obj_1.canObj, function () {
-                _this.pause();
+                _this.stop();
                 alert_mask_handler_1.alertHandle.setAlert({
                     title: 'YOUR SCORE',
                     ifScore: true,
@@ -282,7 +282,7 @@ var ProgramRn = (function () {
                 });
             });
             crash_check_1.CrashCheck.chechCrashItSelf(snake_1.snakeObj, function () {
-                _this.pause();
+                _this.stop();
                 alert_mask_handler_1.alertHandle.setAlert({
                     title: 'YOUR SCORE',
                     ifScore: true,
@@ -309,6 +309,8 @@ var ProgramRn = (function () {
         clearInterval(this.intervalNum);
     };
     ProgramRn.prototype.stop = function () {
+        clearInterval(this.intervalNum);
+        this.currentSpeed = this.initSpeed;
     };
     return ProgramRn;
 }());
@@ -496,10 +498,10 @@ var CopyObj = (function () {
         for (var key in obj) {
             if (typeof obj[key] === 'object') {
                 if (obj[key] instanceof Array) {
-                    CopyObj.copyArr(obj[key]);
+                    imageObject[key] = CopyObj.copyArr(obj[key]);
                 }
                 else if (obj[key] instanceof Object) {
-                    CopyObj.copyObj(obj[key]);
+                    imageObject[key] = CopyObj.copyObj(obj[key]);
                 }
             }
             else {
@@ -513,10 +515,10 @@ var CopyObj = (function () {
         for (var index in arr) {
             if (typeof arr[index] === 'object') {
                 if (arr[index] instanceof Array) {
-                    CopyObj.copyArr(arr[index]);
+                    imageArray[index] = CopyObj.copyArr(arr[index]);
                 }
                 else if (arr[index] instanceof Object) {
-                    CopyObj.copyObj(arr[index]);
+                    imageArray[index] = CopyObj.copyObj(arr[index]);
                 }
             }
             else {
