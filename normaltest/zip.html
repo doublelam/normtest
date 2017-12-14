@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <input id="input" type="file">
+  <script>
+    let input = document.querySelector('#input');
+    input.onchange = (v) => {
+      console.log(v.target.files[0])
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        let arrBuffer = e.target.result;
+        let arr = new Uint8Array(arrBuffer);
+        console.log(arrBuffer,arr,'size: ', arrBuffer.byteLength / 1024, 'kb')
+        let signature = Array.from(arr.slice(0, 8)).map(v => String.fromCharCode(v)).join('');
+        console.log('signature',signature)
+      }
+      reader.readAsArrayBuffer(v.target.files[0]);
+    }
+  </script>
+</body>
+
+</html>

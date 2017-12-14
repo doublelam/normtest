@@ -105,3 +105,10 @@ pow x y
   | y == 0 = 1
   | y == 1 = x
   |otherwise = x * pow x (y - 1)
+
+mini :: [Integer] -> Integer
+mini xs = _min (maybeInt (head xs)) xs
+   where 
+    _min :: Int ->  Array Int -> Int
+    _min m [] = m
+    _min m xs  = _min (min m (maybeInt (head xs))) (drop 1 xs)
