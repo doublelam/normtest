@@ -3,5 +3,9 @@
        "noImplicitAny": false,
        "module": "commonjs",
        "removeComments": true,
-       "sourceMap": false
+       "sourceMap": false,
+       "compilerOptions": {
+              "target": "ES5",
+              "experimentalDecorators": true
+       }
 }

@@ -1,0 +1,40 @@
+<html>
+
+
+<body>
+  <div style="height: 100px; overflow: auto" id="inner-html"></div>
+  <div style="height: 100px; overflow: auto" id="create-element"></div>
+  <button id="inner-btn">innerHTML</button>
+  <button id="create-btn">createElement</button>
+  <script>
+    const ibtn = document.getElementById('inner-btn');
+    const createBtn = document.getElementById('create-btn');
+    function innerHTML() {
+      console.time('innerhtml')
+      const inner = document.getElementById('inner-html');
+      let html = '';
+      for (let i = 0; i < 10000; i++) {
+        html = html + '<div style="color: black">test' + i + '<div>'
+        }
+        inner.innerHTML = inner.innerHTML + html;
+        console.timeEnd('innerhtml')
+      }
+
+    function createElement() {
+      console.time('create')
+      const ele = document.getElementById('create-element');
+      for (let i = 0; i < 10000; i++) {
+        const div = document.createElement('div');
+        div.style.color = 'black';
+        div.innerText = 'test' + i
+        ele.append(div)
+      }
+      console.timeEnd('create')
+    }
+    ibtn.onclick = innerHTML
+    createBtn.onclick = createElement
+
+  </script>
+</body>
+
+</html>

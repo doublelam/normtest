@@ -1,20 +1,27 @@
-export class G964 {
-
-    public static perimeter = (n) => {
-        // your code
-        const fibon: any = (n, arr) => {
-      // your code
-      const arra = arr || [];
-      if (n === 0 || n === 1) {
-        arra[n] = 1;
-        return [1, arra];
-      }
-
-      const fibo = fibon(n - 1, arra)[0] + fibon(n - 2, arra)[0]
-      arra[n] = fibo;
-      return [fibo, arra];
-    }
-    return fibon(n)[1].reduce((a, b) => a + b) * 4
-        
-    }
+@cD
+class S {
+  @test1()
+  public test(a: number, b: number): number {
+    console.log("test", a, b);
+    return a + b;
+  }
 }
+
+function test1() {
+  return (a, b, c) => {
+    console.log("test1", a, b, c);
+  };
+}
+
+function cD(c) {
+  console.log("class dec", c);
+  c.prototype.w = () => {
+    console.log("cd w˝");
+  };
+
+}
+console.log("start__", S);
+const s = new S();
+s.test(1, 3);
+((s as any).w as any)();
+
