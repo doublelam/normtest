@@ -36,6 +36,18 @@ export const config = {
                 send(200, {
                     code: 0,
                     data: {
+                        author: {
+                            uid: "5003771",
+                            age: [
+                                31
+                            ],
+                            gender: [
+                                "m"
+                            ],
+                            avatar: "http://0.bild.poppen.lab/0/m/image/5003771/0/fsk16/0/8/E/5003771-08E797599344BF4972DBB1E5EA5EAB5A_300_sq.jpg",
+                            payclass: "vip",
+                            nickname: "TingTing"
+                        },
                         message_id: `${Math.random()}`.slice(2),
                         group_id: fields.group_id[0],
                         message_type: 0,
@@ -52,10 +64,22 @@ export const config = {
                 send(200, {
                     code: 0,
                     data: {
+                        author: {
+                            uid: "5003771",
+                            age: [
+                                31
+                            ],
+                            gender: [
+                                "m"
+                            ],
+                            avatar: "http://0.bild.poppen.lab/0/m/image/5003771/0/fsk16/0/8/E/5003771-08E797599344BF4972DBB1E5EA5EAB5A_300_sq.jpg",
+                            payclass: "vip",
+                            nickname: "TingTing"
+                        },
                         message_id: `${Math.random()}`.slice(2),
                         group_id: fields.group_id[0],
-                        message_type: 0,
-                        created_at: 0,
+                        message_type: 3,
+                        created_at: Date.now(),
                         additionalProp1: {}
                     }
                 }, res);

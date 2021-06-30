@@ -37,40 +37,41 @@ HTTP.createServer(async (req, res) => {
         match.handler(req, res);
         return;
     }
-    const httpRequest = HTTP.request({
-        host: "http://gold.leo.poppen2.lab",
-        path: url,
-        method,
-        headers: {
-            "Content-Type": req.headers["content-type"] || "application/json;charset=UTF-8",
-            "Cookie": req.headers.cookie || "",
-            "Accept-Language": req.headers["accept-language"] || "en",
-            "Accept": req.headers.accept || "application/json",
-            "User-Agent": req.headers["user-agent"],
-            // "Accept-Encoding": req.headers["accept-encoding"],
-            "Host": "gold.leo.poppen2.lab",
-            "Origin": "http://gold.leo.poppen2.lab",
-            "Connection": req.headers.connection,
-            "Referer": req.headers.referer || "http://gold.leo.poppen2.lab",
-            "Content-Length": req.headers["content-length"] || 0,
-        },
-    }, (resp) => {
-        let c = "";
-        resp.on("data", (chunk) => c = c + chunk);
-        resp.on("end", () => {
-            res.statusCode = resp.statusCode;
-            res.statusMessage = resp.statusMessage;
-            res.end(c);
-        });
-    }).on("error", e => {
-        console.error(e);
-        res.statusCode = 500;
-        res.end();
-    });
     if (method === "get") { return; }
     let rq = "";
     req.on("data", (chunk) => rq = rq + chunk);
     req.on("end", () => {
+        console.log('___Data', rq)
+        const httpRequest = HTTP.request({
+            host: "http://gold.leo.poppen2.lab",
+            path: url,
+            method,
+            headers: {
+                "Content-Type": req.headers["content-type"] || "application/json;charset=UTF-8",
+                "Cookie": req.headers.cookie || "",
+                "Accept-Language": req.headers["accept-language"] || "en",
+                "Accept": req.headers.accept || "application/json",
+                "User-Agent": req.headers["user-agent"],
+                // "Accept-Encoding": req.headers["accept-encoding"],
+                "Host": "gold.leo.poppen2.lab",
+                "Origin": "http://gold.leo.poppen2.lab",
+                "Connection": req.headers.connection,
+                "Referer": req.headers.referer || "http://gold.leo.poppen2.lab",
+                "Content-Length": req.headers["content-length"] || 0,
+            },
+        }, (resp) => {
+            let c = "";
+            resp.on("data", (chunk) => c = c + chunk);
+            resp.on("end", () => {
+                res.statusCode = resp.statusCode;
+                res.statusMessage = resp.statusMessage;
+                res.end(c);
+            });
+        }).on("error", e => {
+            console.error(e);
+            res.statusCode = 500;
+            res.end();
+        });
         httpRequest.write(rq);
         httpRequest.end();
     });
